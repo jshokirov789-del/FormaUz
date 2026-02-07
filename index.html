@@ -1,0 +1,643 @@
+﻿<!-- 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormaUz | Fitnes va kaloriya kuzatuvchisi</title>
+  <meta name="description" content="FormaUz - zamonaviy fitnes, kaloriya kuzatuvi va sog'lom turmush platformasi.">
+  <meta name="theme-color" content="#19d3c5">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient"></div>
+  <div class="app">
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo">FZ</div>
+        <div>
+          <p class="brand-title">FormaUz</p>
+          <p class="brand-sub">Fitnes, kaloriyalar va mustahkam odatlar</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#dashboard">Boshqaruv paneli</a>
+        <a href="#calculator">Kalkulyator</a>
+        <a href="#activity">Qadamlar</a>
+        <a href="#exercises">Mashqlar</a>
+        <a href="#videos">Videolar</a>
+        <a href="#food">Oziq-ovqat</a>
+        <a href="#assistant">Yordamchi</a>
+        <a href="#progress">Natijalar</a>
+      </nav>
+      <div class="actions">
+        <button class="btn ghost" id="modeToggle" type="button">Qorong'i rejim</button>
+        <button class="btn accent" id="installBtn" type="button" hidden>O'rnatish</button>
+      </div>
+    </header>
+
+    <section id="hero" class="hero section">
+      <div class="hero-content">
+        <span class="pill">O'zbekcha ruh, inglizcha UI tayyor</span>
+        <h1>FormaUz bilan aqlliroq mashq qiling, toza ovqatlaning va har bir yutug'ingizni kuzating.</h1>
+        <p>Kaloriya aqlli hisoblari, qadamlar ritmi va sizga moslashadigan mashg'ulotlar — onlayn ham, offlayn ham.</p>
+        <div class="hero-actions">
+          <button class="btn accent" id="startFocus" type="button">Bugungi reja bilan boshlang</button>
+          <button class="btn ghost" id="quickLog" type="button">Ovqatni tez yozish</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card glass">
+            <p class="stat-label">Kaloriya maqsadi</p>
+            <h3 id="heroCalories">-- kkal</h3>
+            <p class="stat-sub">Shaxsiy maqsad</p>
+          </div>
+          <div class="stat-card glass">
+            <p class="stat-label">Suv maqsadi</p>
+            <h3 id="heroWater">-- L</h3>
+            <p class="stat-sub">Kundalik gidratsiya</p>
+          </div>
+          <div class="stat-card glass">
+            <p class="stat-label">Bugungi qadamlar</p>
+            <h3 id="heroSteps">0</h3>
+            <p class="stat-sub">Harakatda bo'ling</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-panel glass">
+        <div class="panel-header">
+          <h3>Kundalik puls</h3>
+          <span class="status-pill" id="statusOnline">Offlayn tayyor</span>
+        </div>
+        <div class="pulse-grid">
+          <div>
+            <p class="label">Kirim kaloriyasi</p>
+            <h4 id="pulseCalories">0 kkal</h4>
+            <div class="progress">
+              <div class="progress-fill" id="calorieProgress"></div>
+            </div>
+          </div>
+          <div>
+            <p class="label">Suv</p>
+            <h4 id="pulseWater">0 L</h4>
+            <div class="progress">
+              <div class="progress-fill" id="waterProgress"></div>
+            </div>
+          </div>
+          <div>
+            <p class="label">Qadamlar</p>
+            <h4 id="pulseSteps">0</h4>
+            <div class="progress">
+              <div class="progress-fill" id="stepProgress"></div>
+            </div>
+          </div>
+        </div>
+        <div class="pulse-message" id="motivationMessage">O'zingizni yengilmas his qilish uchun birgina mashg'ulot yetadi.</div>
+        <div class="pulse-actions">
+          <button class="btn small" id="logWaterBtn" type="button">+ 250 ml suv</button>
+          <button class="btn small ghost" id="resetDayBtn" type="button">Bugunni qayta boshlash</button>
+        </div>
+      </div>
+    </section>
+    <section id="dashboard" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Kundalik maqsadlar paneli</h2>
+        <p>Haqiqatan ham natija beradigan ko'rsatkichlarni kuzating. Bugun <span id="todayDate"></span>.</p>
+      </div>
+      <div class="grid cards-3">
+        <div class="card glass">
+          <h3>Kaloriya balansi</h3>
+          <p class="muted">Maqsad va iste'mol</p>
+          <div class="metric">
+            <span id="dashboardCalories">0 / 0 kkal</span>
+            <span id="calorieDelta">0 kkal left</span>
+          </div>
+          <div class="progress">
+            <div class="progress-fill accent" id="dashboardCalorieProgress"></div>
+          </div>
+          <button class="btn small ghost" id="openFoodLog" type="button">Ovqat qo'shish</button>
+        </div>
+        <div class="card glass">
+          <h3>Gidratsiya</h3>
+          <p class="muted">Suv maqsadi</p>
+          <div class="metric">
+            <span id="dashboardWater">0 / 0 L</span>
+            <span id="waterDelta">0 L to go</span>
+          </div>
+          <div class="progress">
+            <div class="progress-fill accent-2" id="dashboardWaterProgress"></div>
+          </div>
+          <button class="btn small ghost" id="logWaterBtn2" type="button">+ 250 ml</button>
+        </div>
+        <div class="card glass">
+          <h3>Harakat</h3>
+          <p class="muted">Qadamlar ritmi</p>
+          <div class="metric">
+            <span id="dashboardSteps">0 / 8000 qadam</span>
+            <span id="stepDelta">0 maqsadgacha</span>
+          </div>
+          <div class="progress">
+            <div class="progress-fill accent-3" id="dashboardStepProgress"></div>
+          </div>
+          <button class="btn small ghost" id="openSteps" type="button">Qadamlarni yozish</button>
+        </div>
+      </div>
+      <div class="smart-grid">
+        <div class="card glass">
+          <h3>Aqlli tavsiyalar</h3>
+          <ul class="smart-list" id="smartTips"></ul>
+        </div>
+        <div class="card glass">
+          <h3>Bugungi fokus</h3>
+          <p class="muted">Sizning ma'lumotlaringiz asosida avtomatik reja.</p>
+          <div class="focus-grid" id="focusPlan"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculator" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Shaxsiy kaloriya va salomatlik kalkulyatori</h2>
+        <p>BMR, TDEE, ozish maqsadi va kundalik suv ehtiyojini hisoblang.</p>
+      </div>
+      <div class="split">
+        <form class="card glass form" id="calcForm">
+          <div class="field">
+            <label for="height">Bo'y (sm)</label>
+            <input id="height" type="number" min="120" max="230" required>
+          </div>
+          <div class="field">
+            <label for="weight">Vazn (kg)</label>
+            <input id="weight" type="number" min="35" max="200" required>
+          </div>
+          <div class="field">
+            <label for="age">Yosh</label>
+            <input id="age" type="number" min="12" max="80" required>
+          </div>
+          <div class="field">
+            <label for="gender">Jins</label>
+            <select id="gender" required>
+              <option value="female">Ayol</option>
+              <option value="male">Erkak</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="activity">Faollik darajasi</label>
+            <select id="activity" required>
+              <option value="1.2">Kamharakat</option>
+              <option value="1.375">Yengil faol</option>
+              <option value="1.55">O'rtacha faol</option>
+              <option value="1.725">Juda faol</option>
+              <option value="1.9">Sportchi</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="deficit">Ozish defitsiti (kkal)</label>
+            <input id="deficit" type="range" min="200" max="900" step="50" value="500">
+            <div class="range-value"><span id="deficitValue">500</span> kkal/kun</div>
+          </div>
+          <button class="btn accent" type="submit">Hisoblash</button>
+        </form>
+        <div class="card glass results">
+          <h3>Natijalar</h3>
+          <div class="result-grid">
+            <div>
+              <p class="label">BMR</p>
+              <h4 id="bmrValue">-- kkal</h4>
+            </div>
+            <div>
+              <p class="label">TDEE</p>
+              <h4 id="tdeeValue">-- kkal</h4>
+            </div>
+            <div>
+              <p class="label">Ozish maqsadi</p>
+              <h4 id="targetValue">-- kkal</h4>
+            </div>
+            <div>
+              <p class="label">Suv maqsadi</p>
+              <h4 id="waterValue">-- L</h4>
+            </div>
+          </div>
+          <div class="note">Tip: A sustainable deficit is 300-500 kkal/kun. Your slider controls this.</div>
+        </div>
+      </div>
+    </section>
+    <section id="activity" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Qadam hisoblagich va faollik kuzatuvi</h2>
+        <p>Qo'lda kiritish va yoqilgan kaloriyalar bo'yicha aqlli baho. Offlayn tayyor.</p>
+      </div>
+      <div class="grid cards-2">
+        <div class="card glass">
+          <h3>Qadam hisoblagich</h3>
+          <div class="step-display">
+            <h2 id="stepCount">0</h2>
+            <p>bugun qadam</p>
+          </div>
+          <div class="field inline">
+            <input id="stepInput" type="number" min="0" placeholder="Qadam qo'shish">
+            <button class="btn small accent" id="addStepsBtn" type="button">Qo'shish</button>
+          </div>
+          <div class="step-actions">
+            <button class="btn small ghost" id="add500Btn" type="button">+500</button>
+            <button class="btn small ghost" id="add1000Btn" type="button">+1000</button>
+            <button class="btn small accent" id="walkToggle" type="button">Yurishni boshlash</button>
+          </div>
+          <div class="stats-list">
+            <div>
+              <span class="label">Taxminiy yoqim</span>
+              <strong id="stepCalories">0 kkal</strong>
+            </div>
+            <div>
+              <span class="label">Masofa</span>
+              <strong id="stepMasofa">0 km</strong>
+            </div>
+            <div>
+              <span class="label">Faol daqiqalar</span>
+              <strong id="activeMinutes">0 min</strong>
+            </div>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Faollik fokus</h3>
+          <div class="activity-meter">
+            <div>
+              <span class="label">Intensivlik</span>
+              <strong id="activityIntensivlik">Light</strong>
+            </div>
+            <div class="progress">
+              <div class="progress-fill accent-2" id="activityProgress"></div>
+            </div>
+          </div>
+          <div class="activity-log">
+            <h4>Kundalik faollik jurnali</h4>
+            <ul id="activityLog"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="exercises" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Ozish uchun mashqlar</h2>
+        <p>30+ animatsion mashq kartalari, filtrlar, taymer va takrorlar.</p>
+      </div>
+      <div class="exercise-controls">
+        <div class="chip-group" id="exerciseFilters">
+          <button class="chip active" data-filter="all" type="button">All</button>
+          <button class="chip" data-filter="cardio" type="button">Cardio</button>
+          <button class="chip" data-filter="fat-burn" type="button">Fat Burn</button>
+          <button class="chip" data-filter="home" type="button">Uy mashqlari</button>
+          <button class="chip" data-filter="beginner" type="button">Boshlovchi</button>
+          <button class="chip" data-filter="strength" type="button">Strength</button>
+          <button class="chip" data-filter="mobility" type="button">Mobility</button>
+        </div>
+        <div class="card glass session" id="exerciseSession">
+          <div>
+            <p class="label">Faol mashq</p>
+            <h4 id="sessionName">Mashqni tanlang</h4>
+          </div>
+          <div class="session-meta">
+            <div>
+              <span class="label">Taymer</span>
+              <strong id="sessionTaymer">00:00</strong>
+            </div>
+            <div>
+              <span class="label">Takrorlar</span>
+              <strong id="sessionTakrorlar">0</strong>
+            </div>
+          </div>
+          <div class="session-actions">
+            <button class="btn small accent" id="sessionStart" type="button">Boshlash</button>
+            <button class="btn small ghost" id="sessionPause" type="button">Pauza</button>
+            <button class="btn small ghost" id="sessionReset" type="button">Qayta</button>
+          </div>
+        </div>
+      </div>
+      <div class="grid cards-4" id="exerciseGrid"></div>
+    </section>
+    <section id="videos" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Video mashg'ulotlar</h2>
+        <p>30+ mashg'ulot videolari, progress kuzatuvi va tezkor kirish bilan.</p>
+      </div>
+      <div class="video-layout">
+        <div class="video-player card glass">
+          <iframe id="videoPlayer" title="Mashg'ulot videosi" src="https://www.youtube.com/embed?listType=search&list=15%20minute%20full%20body%20workout" allowfullscreen loading="lazy"></iframe>
+          <div class="video-actions">
+            <button class="btn small accent" id="markWatched" type="button">Ko'rildi deb belgilash</button>
+            <span id="videoStatus" class="muted">Kutubxonadan video tanlang.</span>
+          </div>
+        </div>
+        <div class="video-library" id="videoLibrary"></div>
+      </div>
+    </section>
+
+    <section id="food" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Ovqat kaloriyasini aniqlash</h2>
+        <p>Surat yuklang, ovqatni rasmga oling yoki nomini yozing. Saqlangan ovqatlar offlayn ishlaydi.</p>
+      </div>
+      <div class="grid cards-2">
+        <div class="card glass">
+          <h3>Ovqatni aniqlash</h3>
+          <div class="field">
+            <label for="foodImage">Yuklash yoki suratga olish</label>
+            <input id="foodImage" type="file" accept="image/*" capture="environment">
+          </div>
+          <div class="field">
+            <label for="foodName">Ovqat nomi</label>
+            <input id="foodName" type="text" placeholder="masalan, palov, salat, tovuq">
+          </div>
+          <div class="field inline">
+            <input id="foodAmount" type="number" min="1" value="1">
+            <span class="muted">porsiya</span>
+          </div>
+          <button class="btn accent" id="detectFoodBtn" type="button">Kaloriyani aniqlash</button>
+          <div class="food-preview" id="foodPreview">Ko'rinish tayyor</div>
+        </div>
+        <div class="card glass">
+          <h3>Kaloriya va yoqish rejasi</h3>
+          <div id="foodResult" class="food-result" role="status" aria-live="polite">
+            <p class="muted">Ovqat bo'yicha natijalar shu yerda ko'rinadi.</p>
+          </div>
+          <div class="food-actions">
+            <button class="btn small ghost" id="saveFoodBtn" type="button">Ovqatni saqlash</button>
+            <button class="btn small ghost" id="logFoodBtn" type="button">Ovqatni yozish</button>
+          </div>
+          <div class="saved-foods">
+            <h4>Saqlangan ovqatlar</h4>
+            <ul id="savedFoodsList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="assistant" class="section" data-reveal>
+      <div class="section-head">
+        <h2>AI fitnes yordamchisi</h2>
+        <p>Mashqlar, kaloriya yoki ovqatlanish haqida so'rang. Do'stona va motivatsion javoblar.</p>
+      </div>
+      <div class="grid cards-2">
+        <div class="card glass chat-panel">
+          <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
+          <form class="chat-input" id="chatForm">
+            <input id="chatInput" type="text" placeholder="FormaUzdan so'rang...">
+            <button class="btn accent" type="submit">Yuborish</button>
+          </form>
+        </div>
+        <div class="card glass">
+          <h3>Yordamchi tavsiyalari</h3>
+          <ul class="assistant-list" id="assistantHighlights"></ul>
+          <div class="note">Maslahatlar ma'lumotlaringizga moslashadi.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="progress" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Natijalar va tahlil</h2>
+        <p>Vazn, kaloriya, qadam va yutuqlarni kuzating.</p>
+      </div>
+      <div class="grid cards-3">
+        <div class="card glass">
+          <h3>Vazn trendi</h3>
+          <canvas id="weightChart"></canvas>
+          <div class="field inline">
+            <input id="weightLogInput" type="number" step="0.1" placeholder="kg">
+            <button class="btn small accent" id="logWeightBtn" type="button">Yozish</button>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Kaloriya trendi</h3>
+          <canvas id="calorieChart"></canvas>
+          <div class="field inline">
+            <input id="calorieLogInput" type="number" step="10" placeholder="kkal">
+            <button class="btn small accent" id="logCaloriesBtn" type="button">Yozish</button>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Qadamlar trendi</h3>
+          <canvas id="stepChart"></canvas>
+          <div class="field inline">
+            <input id="stepLogInput" type="number" step="100" placeholder="qadam">
+            <button class="btn small accent" id="logStepsBtn" type="button">Yozish</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="extras" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Offlayn rejim va bildirishnomalar</h2>
+        <p>Internetsiz ham yo'ldan chiqmang va suv eslatmalarini oling.</p>
+      </div>
+      <div class="grid cards-2">
+        <div class="card glass">
+          <h3>Offlayn tayyor</h3>
+          <p class="muted" id="offlineStatus">Service worker hali ro'yxatdan o'tmagan.</p>
+          <button class="btn small ghost" id="refreshCacheBtn" type="button">Keshni yangilash</button>
+        </div>
+        <div class="card glass">
+          <h3>Gidratsiya Reminders</h3>
+          <p class="muted">Ilova ochiq bo'lganda mahalliy bildirishnomalarni yoqing.</p>
+          <button class="btn small accent" id="notifyBtn" type="button">Eslatmalarni yoqish</button>
+          <div class="note" id="notifyStatus">Bildirishnomalar o'chirilgan.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>FormaUz - O'zbek sog'lom turmush madaniyatidan ilhomlangan energiyali fitnes kuzatuvi.</p>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+ -->
+
+
+ <!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormaUz | Fitnes va kaloriya kuzatuvchisi</title>
+  <meta name="description" content="FormaUz — zamonaviy fitnes, kaloriya kuzatuvi va sog‘lom turmush platformasi.">
+  <meta name="theme-color" content="#19d3c5">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient"></div>
+  <div class="app">
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="logo">FZ</div>
+        <div>
+          <p class="brand-title">FormaUz</p>
+          <p class="brand-sub">Fitnes, kaloriyalar va mustahkam odatlar</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#dashboard">Boshqaruv paneli</a>
+        <a href="#calculator">Kalkulyator</a>
+        <a href="#activity">Qadamlar</a>
+        <a href="#exercises">Mashqlar</a>
+        <a href="#videos">Videolar</a>
+        <a href="#food">Oziq-ovqat</a>
+        <a href="#assistant">Yordamchi</a>
+        <a href="#progress">Natijalar</a>
+      </nav>
+      <div class="actions">
+        <button class="btn ghost" id="modeToggle" type="button">Qorong‘i rejim</button>
+        <button class="btn accent" id="installBtn" type="button" hidden>O‘rnatish</button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="hero" class="hero section">
+      <div class="hero-content">
+        <span class="pill">O‘zbekcha ruh, zamonaviy interfeys</span>
+        <h1>FormaUz bilan aqlliroq mashq qiling, toza ovqatlaning va har bir yutug‘ingizni kuzating.</h1>
+        <p>Kaloriyalarni aqlli hisoblash, qadamlar ritmi va sizga mos mashg‘ulotlar — onlayn va offlayn.</p>
+        <div class="hero-actions">
+          <button class="btn accent" id="startFocus" type="button">Bugungi reja bilan boshlash</button>
+          <button class="btn ghost" id="quickLog" type="button">Ovqatni tez yozish</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card glass">
+            <p class="stat-label">Kaloriya maqsadi</p>
+            <h3 id="heroCalories">-- kkal</h3>
+            <p class="stat-sub">Shaxsiy maqsad</p>
+          </div>
+          <div class="stat-card glass">
+            <p class="stat-label">Suv maqsadi</p>
+            <h3 id="heroWater">-- L</h3>
+            <p class="stat-sub">Kundalik gidratsiya</p>
+          </div>
+          <div class="stat-card glass">
+            <p class="stat-label">Bugungi qadamlar</p>
+            <h3 id="heroSteps">0</h3>
+            <p class="stat-sub">Harakatda bo‘ling</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-panel glass">
+        <div class="panel-header">
+          <h3>Kundalik holat</h3>
+          <span class="status-pill" id="statusOnline">Offlayn rejimga tayyor</span>
+        </div>
+
+        <div class="pulse-grid">
+          <div>
+            <p class="label">Qabul qilingan kaloriyalar</p>
+            <h4 id="pulseCalories">0 kkal</h4>
+            <div class="progress"><div class="progress-fill" id="calorieProgress"></div></div>
+          </div>
+          <div>
+            <p class="label">Suv</p>
+            <h4 id="pulseWater">0 L</h4>
+            <div class="progress"><div class="progress-fill" id="waterProgress"></div></div>
+          </div>
+          <div>
+            <p class="label">Qadamlar</p>
+            <h4 id="pulseSteps">0</h4>
+            <div class="progress"><div class="progress-fill" id="stepProgress"></div></div>
+          </div>
+        </div>
+
+        <div class="pulse-message" id="motivationMessage">
+          O‘zingizni yengilmas his qilish uchun bitta mashg‘ulot yetarli.
+        </div>
+
+        <div class="pulse-actions">
+          <button class="btn small" id="logWaterBtn" type="button">+ 250 ml suv</button>
+          <button class="btn small ghost" id="resetDayBtn" type="button">Bugunni qayta boshlash</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Kundalik maqsadlar paneli</h2>
+        <p>Haqiqiy natija beradigan ko‘rsatkichlarni kuzating. Bugun: <span id="todayDate"></span></p>
+      </div>
+
+      <div class="grid cards-3">
+        <div class="card glass">
+          <h3>Kaloriya balansi</h3>
+          <p class="muted">Maqsad va iste’mol</p>
+          <div class="metric">
+            <span id="dashboardCalories">0 / 0 kkal</span>
+            <span id="calorieDelta">0 kkal qoldi</span>
+          </div>
+          <div class="progress"><div class="progress-fill accent" id="dashboardCalorieProgress"></div></div>
+          <button class="btn small ghost" id="openFoodLog" type="button">Ovqat qo‘shish</button>
+        </div>
+
+        <div class="card glass">
+          <h3>Gidratsiya</h3>
+          <p class="muted">Suv maqsadi</p>
+          <div class="metric">
+            <span id="dashboardWater">0 / 0 L</span>
+            <span id="waterDelta">0 L qoldi</span>
+          </div>
+          <div class="progress"><div class="progress-fill accent-2" id="dashboardWaterProgress"></div></div>
+          <button class="btn small ghost" id="logWaterBtn2" type="button">+ 250 ml</button>
+        </div>
+
+        <div class="card glass">
+          <h3>Harakat</h3>
+          <p class="muted">Qadamlar ritmi</p>
+          <div class="metric">
+            <span id="dashboardSteps">0 / 8000 qadam</span>
+            <span id="stepDelta">0 qadam qoldi</span>
+          </div>
+          <div class="progress"><div class="progress-fill accent-3" id="dashboardStepProgress"></div></div>
+          <button class="btn small ghost" id="openSteps" type="button">Qadam qo‘shish</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section id="calculator" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Shaxsiy kaloriya va salomatlik kalkulyatori</h2>
+        <p>BMR, TDEE, ozish maqsadi va suv ehtiyojini hisoblang.</p>
+      </div>
+
+      <div class="note">
+        Maslahat: Barqaror defitsit kuniga 300–500 kkal bo‘ladi. Slayder orqali boshqariladi.
+      </div>
+    </section>
+
+    <!-- EXERCISES -->
+    <section id="exercises" class="section" data-reveal>
+      <div class="section-head">
+        <h2>Ozish uchun mashqlar</h2>
+        <p>30+ animatsiyali mashqlar, filtrlar, taymer va takrorlar.</p>
+      </div>
+
+      <div class="chip-group" id="exerciseFilters">
+        <button class="chip active" data-filter="all" type="button">Barchasi</button>
+        <button class="chip" data-filter="cardio" type="button">Kardio</button>
+        <button class="chip" data-filter="fat-burn" type="button">Yog‘ yoqish</button>
+        <button class="chip" data-filter="home" type="button">Uy mashqlari</button>
+        <button class="chip" data-filter="beginner" type="button">Boshlovchi</button>
+        <button class="chip" data-filter="strength" type="button">Kuch</button>
+        <button class="chip" data-filter="mobility" type="button">Moslashuvchanlik</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>FormaUz — o‘zbek sog‘lom turmush madaniyatidan ilhomlangan zamonaviy fitnes kuzatuvchisi.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
